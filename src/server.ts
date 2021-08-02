@@ -13,6 +13,8 @@ import { apiErrorValidator } from '@src/middlewares/api-error-validator';
 
 class SetupServer extends Server {
   private server?: http.Server;
+  private jwt = require('express-jwt');
+  private blacklist = require('express-jwt-blacklist');
 
   // Aqui a porta tem que ser fixa por causa do heroku
   private port = PortaConfig.normalizePort(
@@ -39,6 +41,10 @@ class SetupServer extends Server {
     );
     this.app.use(helmet());
     this.app.disable('x-powered-by');
+    this.app.use(this.jwt({
+        secret: config.get('App.auth.key'),
+        isRevoked: this.blacklist.isRevoked
+      }));
   }
 
   private setupExpress(): void {

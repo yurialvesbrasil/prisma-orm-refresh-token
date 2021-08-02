@@ -1,6 +1,6 @@
 import { prismaClient } from '../../prisma/client';
-import { hash } from 'bcryptjs';
 import { ServiceInternalError } from '@src/util/errors/api-error';
+import AuthService from '@src/services/AuthService';
 
 interface IUserRequest {
   name: string;
@@ -21,7 +21,7 @@ export class CreationUserUseCase {
       throw new ServiceInternalError('User already exists!','This username already belongs to an already registered user.');
 
     /* Cadastra o usuário */
-    const passwordHash = await hash(password, 8);
+    const passwordHash = await AuthService.hashPassword(password);
     const user = await prismaClient.user.create({
       data: {
         name,
