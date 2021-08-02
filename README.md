@@ -20,7 +20,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 💻 Projeto
 
-Projeto de autenticação de usuário suando JWT e Prostgres.
+Projeto de autenticação de usuário usando JWT e Prostgres.
 
 ## 🚀 Como executar
 
