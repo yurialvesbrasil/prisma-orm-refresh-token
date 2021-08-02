@@ -21,9 +21,9 @@ export class CreationUserController extends BaseController {
       return response.json(user);
     } catch (error) {
       return this.sendErrorResponse(response, {
-          message: `${error.message}`,
-          description: `${error.description}`,
-          code: 500,
+        message: `${error.message}`,
+        description: `${error.description}`,
+        code: 500,
       });
     }
   }

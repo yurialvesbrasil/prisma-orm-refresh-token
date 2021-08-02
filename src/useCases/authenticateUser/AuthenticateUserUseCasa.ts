@@ -1,6 +1,8 @@
 import { prismaClient } from '@src/prisma/client';
+import { GenerateRefreshToken } from '@src/provider/GenerateRefreshToken';
 import AuthService from '@src/services/AuthService';
 import { ServiceInternalError } from '@src/util/errors/api-error';
+import { getReasonPhrase } from 'http-status-codes';
 
 export interface IAuthRequest {
   username: string;
@@ -8,27 +10,41 @@ export interface IAuthRequest {
 }
 
 export class AuthenticateUserUseCasa {
-    async generationAuthUserToken({ username, password }: IAuthRequest) {
-        /* Verificar se usuário existe */
-        const userAlreadyExists = await prismaClient.user.findFirst({
-            where: {
-                username,
-            },
-        });
+  async generationAuthUserToken({ username, password }: IAuthRequest) {
+    /* Verificar se usuário existe */
+    const userAlreadyExists = await prismaClient.user.findFirst({
+      where: {
+        username,
+      },
+    });
 
-        if (!userAlreadyExists)
-            throw new ServiceInternalError('User ou password invalid!', 'Please check the username and/or password and try again.');
-        
-        /* Verificar se a senha está correta */ 
-        const passwordMatch = await AuthService.comparePasswords(password, userAlreadyExists.password);
+    if (!userAlreadyExists)
+      throw new ServiceInternalError(
+        'User ou password invalid!',
+        'Please check the username and/or password and try again.'
+      );
 
-        if(!passwordMatch)
-            throw new ServiceInternalError('User ou password invalid!', 'Please check the username and/or password and try again.');
+    /* Verificar se a senha está correta */
+    const passwordMatch = await AuthService.comparePasswords(
+      password,
+      userAlreadyExists.password
+    );
 
-        /* Gera token JWT */    
-        const token = AuthService.generateToken(userAlreadyExists.id, userAlreadyExists.name);
+    if (!passwordMatch)
+      throw new ServiceInternalError(
+        'User ou password invalid!',
+        'Please check the username and/or password and try again.'
+      );
 
-        return token;
-    }
+    /* Gera token JWT */
+    const token = AuthService.generateToken(
+      userAlreadyExists.id,
+      userAlreadyExists.name
+    );
 
+    const generateRefreshToken = new GenerateRefreshToken();
+    const refreshToken = await generateRefreshToken.createRefreshToken(userAlreadyExists.id);
+
+    return {token, refreshToken};
+  }
 }

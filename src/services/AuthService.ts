@@ -31,6 +31,4 @@ export default class AuthService {
   public static decodeToken(token: string): JwtToken {
     return jwt.verify(token, config.get('App.auth.key')) as JwtToken;
   }
-
-
 }

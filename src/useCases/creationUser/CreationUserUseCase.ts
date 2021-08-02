@@ -18,7 +18,10 @@ export class CreationUserUseCase {
     });
 
     if (userAlreadyExists)
-      throw new ServiceInternalError('User already exists!','This username already belongs to an already registered user.');
+      throw new ServiceInternalError(
+        'User already exists!',
+        'This username already belongs to an already registered user.'
+      );
 
     /* Cadastra o usuário */
     const passwordHash = await AuthService.hashPassword(password);
