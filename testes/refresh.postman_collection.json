@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "857cfa88-9d3d-4589-bdeb-f397555db77c",
+		"name": "refresh",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "handleUserCreation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"yuri.brasil3\",\r\n    \"name\": \"Yuri Brasil3\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/users",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "handleLogin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"yuri.brasil2\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/users/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "handleListCourses",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlNDUzM2ExZS05ZTk1LTRmMDQtYTRmMi05MzFiZjg4NGQ3NjMiLCJuYW1lIjoiWXVyaSBCcmFzaWwyIiwiaWF0IjoxNjI3OTQzODQ2LCJleHAiOjE2Mjc5NDU2NDZ9.dMeJDFYAJQr8nyD9wZzxBKt2p-nmJ7ntyp4L8CujffQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/courses",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"courses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "handleRefreshToken",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "dd4d0fb6-e84e-410b-a750-048628f75a79",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/users/refresh",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "localhost:3000"
+		}
+	]
+}
