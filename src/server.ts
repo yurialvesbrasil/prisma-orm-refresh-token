@@ -10,11 +10,10 @@ import cors from 'cors';
 import config from 'config';
 import { CreationUserController } from '@src/useCases/creationUser/CreationUserController';
 import { apiErrorValidator } from '@src/middlewares/api-error-validator';
+import { AuthenticateUserController } from './useCases/authenticateUser/AuthenticateUserController';
 
 class SetupServer extends Server {
   private server?: http.Server;
-  private jwt = require('express-jwt');
-  private blacklist = require('express-jwt-blacklist');
 
   // Aqui a porta tem que ser fixa por causa do heroku
   private port = PortaConfig.normalizePort(
@@ -41,10 +40,6 @@ class SetupServer extends Server {
     );
     this.app.use(helmet());
     this.app.disable('x-powered-by');
-    this.app.use(this.jwt({
-        secret: config.get('App.auth.key'),
-        isRevoked: this.blacklist.isRevoked
-      }));
   }
 
   private setupExpress(): void {
@@ -54,7 +49,9 @@ class SetupServer extends Server {
 
   private setupControllers(): void {
     const creationUserController = new CreationUserController();
+    const authenticateUserController = new AuthenticateUserController();
     this.addControllers([creationUserController]);
+    this.addControllers([authenticateUserController]);
   }
 
   public getApp(): Application {

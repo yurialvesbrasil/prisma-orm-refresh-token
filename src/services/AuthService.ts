@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 
 export interface JwtToken {
   sub: string;
+  name: string;
 }
 
 export default class AuthService {
@@ -21,8 +22,8 @@ export default class AuthService {
     return await bcrypt.compare(password, hashedPassword);
   }
 
-  public static generateToken(sub: string): string {
-    return jwt.sign({ sub }, config.get('App.auth.key'), {
+  public static generateToken(sub: string, name: string): string {
+    return jwt.sign({ sub, name }, config.get('App.auth.key'), {
       expiresIn: config.get('App.auth.tokenExpiresIn'),
     });
   }

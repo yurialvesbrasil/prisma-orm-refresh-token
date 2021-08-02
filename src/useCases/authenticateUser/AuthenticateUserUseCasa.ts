@@ -1,15 +1,14 @@
 import { prismaClient } from '@src/prisma/client';
 import AuthService from '@src/services/AuthService';
 import { ServiceInternalError } from '@src/util/errors/api-error';
-import { compare } from 'bcryptjs';
 
-interface IAuthRequest {
+export interface IAuthRequest {
   username: string;
   password: string;
 }
 
 export class AuthenticateUserUseCasa {
-    async handleAuthUser({ username, password }: IAuthRequest) {
+    async generationAuthUserToken({ username, password }: IAuthRequest) {
         /* Verificar se usuário existe */
         const userAlreadyExists = await prismaClient.user.findFirst({
             where: {
@@ -26,8 +25,10 @@ export class AuthenticateUserUseCasa {
         if(!passwordMatch)
             throw new ServiceInternalError('User ou password invalid!', 'Please check the username and/or password and try again.');
 
-        /* Gera hash */    
-    
+        /* Gera token JWT */    
+        const token = AuthService.generateToken(userAlreadyExists.id, userAlreadyExists.name);
+
+        return token;
     }
 
 }

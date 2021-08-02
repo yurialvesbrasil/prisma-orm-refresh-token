@@ -2,7 +2,7 @@
     "App": {
       "port": 3000,
       "auth":{
-        "key": "fsdfsdfsdfsdfsdfsdf",
+        "key": "ce2d054e-0e88-4358-847a-f672fa4db136",
         "tokenExpiresIn": 1800
       }
     }
