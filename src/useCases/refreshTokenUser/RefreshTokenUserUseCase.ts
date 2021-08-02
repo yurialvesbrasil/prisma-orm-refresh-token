@@ -7,6 +7,9 @@ export class RefreshTokenUserUseCase {
         const refreshTokenObject = await prismaClient.refreshToken.findFirst({
             where: {
                 id: refresh_token,
+            },
+            include:{
+             user: true
             }
         });
 
@@ -16,7 +19,8 @@ export class RefreshTokenUserUseCase {
           'The Refresh Token informed was not found in the records.'
         );
 
-        const token = AuthService.generateToken(refreshTokenObject.userId, "yuri Brasil");
+        const token = AuthService.generateToken(refreshTokenObject.userId, refreshTokenObject.user.name);
+       
         return token;    
     }
 }

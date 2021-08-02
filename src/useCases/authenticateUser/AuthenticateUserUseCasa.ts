@@ -2,7 +2,7 @@ import { prismaClient } from '@src/prisma/client';
 import { GenerateRefreshToken } from '@src/provider/GenerateRefreshToken';
 import AuthService from '@src/services/AuthService';
 import { ServiceInternalError } from '@src/util/errors/api-error';
-import { getReasonPhrase } from 'http-status-codes';
+
 
 export interface IAuthRequest {
   username: string;
