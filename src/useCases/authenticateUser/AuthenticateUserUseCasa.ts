@@ -3,7 +3,6 @@ import { GenerateRefreshToken } from '@src/provider/GenerateRefreshToken';
 import AuthService from '@src/services/AuthService';
 import { ServiceInternalError } from '@src/util/errors/api-error';
 
-
 export interface IAuthRequest {
   username: string;
   password: string;
@@ -43,8 +42,10 @@ export class AuthenticateUserUseCasa {
     );
 
     const generateRefreshToken = new GenerateRefreshToken();
-    const refreshToken = await generateRefreshToken.createRefreshToken(userAlreadyExists.id);
+    const refreshToken = await generateRefreshToken.createRefreshToken(
+      userAlreadyExists.id
+    );
 
-    return {token, refreshToken};
+    return { token, refreshToken };
   }
 }

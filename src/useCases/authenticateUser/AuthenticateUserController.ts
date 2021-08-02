@@ -17,7 +17,13 @@ export class AuthenticateUserController extends BaseController {
         username,
         password,
       });
-      return response.status(200).json({ code: 200, token: token.token, refresh_token: token.refreshToken });
+      return response
+        .status(200)
+        .json({
+          code: 200,
+          token: token.token,
+          refresh_token: token.refreshToken,
+        });
     } catch (error) {
       return this.sendErrorResponse(response, {
         message: `${error.message}`,
