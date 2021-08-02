@@ -11,6 +11,7 @@ import config from 'config';
 import { CreationUserController } from '@src/useCases/creationUser/CreationUserController';
 import { apiErrorValidator } from '@src/middlewares/api-error-validator';
 import { AuthenticateUserController } from './useCases/authenticateUser/AuthenticateUserController';
+import { ListCoursesController } from './useCases/listCourses/ListCoursesController';
 
 class SetupServer extends Server {
   private server?: http.Server;
@@ -50,8 +51,10 @@ class SetupServer extends Server {
   private setupControllers(): void {
     const creationUserController = new CreationUserController();
     const authenticateUserController = new AuthenticateUserController();
+    const listCoursesController = new ListCoursesController();
     this.addControllers([creationUserController]);
     this.addControllers([authenticateUserController]);
+    this.addControllers([listCoursesController]);
   }
 
   public getApp(): Application {

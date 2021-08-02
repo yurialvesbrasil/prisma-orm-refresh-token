@@ -1,23 +1,36 @@
 import AuthService from "@src/services/AuthService";
+import ApiError, { APIError } from "@src/util/errors/api-error";
 import { NextFunction, Request, Response } from "express";
+
+function sendAuthErrorResponse(res: Response, apiError: APIError): Response {
+    return res.status(apiError.code).send(ApiError.format(apiError));
+}
 
 export function authMiddleware(
     req: Request,
     res: Response,
     next: NextFunction
   ): void {
-    const token = req.headers?.['x-access-token'];
+    const authorization = req.headers?.authorization;
     try {
-      if (!token){
-        res
-          .status(400)
-          .send({ code: 400, error: 'Faltam parâmentros de segurança.' });
+      if (!authorization){
+        sendAuthErrorResponse(res, {
+            message: 'Security parameters are missing.',
+            description: 'Security token has not been sent.',
+            code: 400,
+        });
       }else{
-        const claims = AuthService.decodeToken(token as string);
+        const token = authorization.split(" ");  
+        const claims = AuthService.decodeToken(token[1] as string);
         req.params.userId = claims.sub;
+        req.params.name = claims.name;
         next();
       }
-    } catch (err) {
-      res.status(401).send({ code: 401, error: err.message });
-    }
+    } catch (error) {
+        sendAuthErrorResponse(res, {
+            message: `${error.message}`,
+            description: `${error.description}`,
+            code: 500,
+        });
+      }
   }
